@@ -77,7 +77,7 @@ function listUsers(networkData) {
     });
     console.log("User: " + theirName);
     console.log("They follow: " + whoTheyFollowArray.join(", "));
-    console.log("Their followers are: " + theirFollowersArray.join(", "));
+    console.log("Their followers: " + theirFollowersArray.join(", "));
   }
 }
 
