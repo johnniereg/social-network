@@ -41,31 +41,43 @@ function collectUserIDs(networkData) {
   return userIDs;
 }
 
-// Puts all user names into a string. NOT USEFUL YET
+// Checks who follows a given userid.
 
-function listUsersByName(networkData) {
-  var listOfUsersNames = [];
-  for (var users in networkData) {
-    var user = networkData[users];
-    listOfUsersNames.push(user.name);
-  }
-  return listOfUsersNames.join(", ");
+function whoFollowsMe(userid, networkData) {
+// Sets an array of all users ids in the social network.
+  var theUsers = collectUserIDs(networkData);
+// Receives a userID to check if they are being followed by each user.
+  var checkThisID = userid;
+  var theFollowers = [];
+    for (var users in networkData) {
+      var theirID = networkData[users];
+      theirID['follows'].forEach(function(following) {
+        if (checkThisID === following) {
+          theFollowers.push(theirID['name'])
+        }
+      });
+    }
+  // Return an array with each name of who follows the given user.
+  return theFollowers;
 }
 
 // List everyone and for each of them, list the names of who they follow and who follows them
 
 function listUsers(networkData) {
-  var theirName = "";
-  var whoTheyFollow = "";
-  var theirFollowers = "";
 
   for (var users in networkData) {
     var userID = networkData[users];
-    theirName = userID.name;
-
-
-
-    console.log(theirName, "follows", whoTheyFollow, "and", theirFollowers, "follow them.");
+    var theirName = userID.name;
+    var whoTheyFollowArray = [];
+    var theirFollowersArray = whoFollowsMe(users, networkData);
+    // Adds the names of their followers to an array.
+    userID['follows'].forEach(function(user){
+      var theirID = networkData[user];
+      whoTheyFollowArray.push(theirID['name']);
+    });
+    console.log("User: " + theirName);
+    console.log("They follow: " + whoTheyFollowArray.join(", "));
+    console.log("Their followers are: " + theirFollowersArray.join(", "));
   }
 }
 
@@ -89,3 +101,13 @@ listUsers(tweetbook);
 
 // List everyone and their reach (sum of # of followers and # of followers of followers)
 
+// Puts all user names into a string. NOT USEFUL YET
+
+function listUsersByName(networkData) {
+  var listOfUsersNames = [];
+  for (var users in networkData) {
+    var user = networkData[users];
+    listOfUsersNames.push(user.name);
+  }
+  return listOfUsersNames.join(", ");
+}
