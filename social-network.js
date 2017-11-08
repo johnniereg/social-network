@@ -81,10 +81,32 @@ function listUsers(networkData) {
   }
 }
 
-listUsers(tweetbook);
+// listUsers(tweetbook);
 
 
 // Identify who follows the most people
+
+function whoFollowsTheMost(networkData) {
+
+  var theUsers = collectUserIDs(networkData);
+
+  var followsMost;
+  var howManyTheyFollow = 0;
+
+  for (var users in networkData) {
+    var userID = networkData[users];
+    var theirName = userID.name;
+    var theyFollow = userID['follows'];
+
+    if (theyFollow.length > howManyTheyFollow) {
+      followsMost = theirName;
+      howManyTheyFollow = theyFollow.length;
+    }
+  }
+  console.log(followsMost + " follows the most users.");
+}
+
+whoFollowsTheMost(tweetbook);
 
 
 // Identify who has the most followers
